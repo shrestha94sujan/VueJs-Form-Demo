@@ -9,6 +9,7 @@
 </template>
 
 <script>
+  import searchMixin from  '../mixins/searchMixin.js'
 
   export default {
 
@@ -31,13 +32,9 @@
 
     },
     computed: {
-      //Adding Custom filter that filters out Usernames
-      filteredUsernames: function () {
-        return this.users.filter((user) => {
-          return user.username.match(this.search);
-        })
-      }
-    }
+
+    },
+    mixins: [searchMixin]
 
   }
 </script>

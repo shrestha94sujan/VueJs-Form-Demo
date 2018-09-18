@@ -1,10 +1,11 @@
 <template>
   <div id="app">
     <app-header v-bind:title="title"></app-header>
-    <component v-bind:is="component" v-bind:user="user" v-bind:users="users"></component>
-      <button v-on:click="showSummary" v-show="showSummaryButton">Submit</button>
-      <button v-on:click="goBack" v-show="showBackButton">Back</button>
-      <button v-on:click="showUsers" v-show="showUsersButton">AllUsers</button>
+    <!--<component v-bind:is="component" v-bind:user="user" v-bind:users="users"></component>-->
+    <router-view v-bind:user="user" v-bind:users="users"></router-view>
+    <router-link to="/summary"><button v-on:click="showSummary" v-show="showSummaryButton">Submit</button></router-link>
+    <router-link to="/"><button v-on:click="goBack" v-show="showBackButton">Back</button></router-link>
+    <router-link to="/users"><button v-on:click="showUsers" v-show="showUsersButton">AllUsers</button></router-link>
     <app-footer v-bind:title="title" v-on:changeTitle="updateTitle($event)"></app-footer>
   </div>
 </template>
@@ -24,7 +25,7 @@
       'app-form': Form,
       'app-form-summary': FormSummary,
       'app-footer': Footer,
-      'user-list' : UserList
+      'user-list' : UserList,
     },
     data:function () {
       return {
@@ -52,7 +53,7 @@
         this.showSummaryButton = !this.showSummaryButton;
         this.showBackButton = !this.showBackButton;
         this.showUsersButton = false;
-        this.component = 'app-form-summary';
+        // this.component = 'app-form-summary';
         this.users.push(this.user);
       },
       goBack:function () {
@@ -67,13 +68,14 @@
           city: '',
           gender: ''
         };
-        this.component = 'app-form';
+        //old way of doing it
+        // this.component = 'app-form';
       },
       showUsers: function() {
         this.showBackButton = true;
         this.showUsersButton = false;
         this.showSummaryButton = false;
-        this.component = 'user-list';
+        // this.component = 'user-list';
       },
       //Without using bus to emit events
       updateTitle:function(title) {
