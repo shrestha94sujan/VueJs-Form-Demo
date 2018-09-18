@@ -1,35 +1,37 @@
 <template>
   <div id="app">
     <app-header v-bind:title="title"></app-header>
-    <app-image></app-image>
-    <component v-bind:is="component" v-bind:user="user"></component>
+    <component v-bind:is="component" v-bind:user="user" v-bind:users="users"></component>
       <button v-on:click="showSummary" v-show="showSummaryButton">Submit</button>
       <button v-on:click="goBack" v-show="showBackButton">Back</button>
-      <button v-on:click="clear" v-show="showClearButton">Clear</button>
-    <app-footer></app-footer>
+      <button v-on:click="showUsers" v-show="showUsersButton">AllUsers</button>
+    <app-footer v-bind:title="title" v-on:changeTitle="updateTitle($event)"></app-footer>
   </div>
 </template>
 
 <script>
   import Header from './components/Header.vue'
-  import Image from './components/Image.vue'
+  // import Image from './components/Image.vue'
   import Form from './components/Form.vue'
   import FormSummary from './components/FormSummary.vue'
   import Footer from './components/Footer'
+  import UserList from './components/Users.vue'
+  import {bus} from './main.js'
 
   export default {
     components: {
       'app-header': Header,
-      'app-image': Image,
       'app-form': Form,
       'app-form-summary': FormSummary,
-      'app-footer': Footer
+      'app-footer': Footer,
+      'user-list' : UserList
     },
     data:function () {
       return {
         showSummaryButton: true,
         showBackButton: false,
         showClearButton: false,
+        showUsersButton:false,
 
         component: 'app-form',
 
@@ -41,23 +43,22 @@
           state: '',
           city: '',
           gender: ''
-        }
+        },
+        users: [],
       }
     },
     methods: {
       showSummary:function () {
         this.showSummaryButton = !this.showSummaryButton;
         this.showBackButton = !this.showBackButton;
+        this.showUsersButton = false;
         this.component = 'app-form-summary';
+        this.users.push(this.user);
       },
       goBack:function () {
-        this.showBackButton = !this.showBackButton;
-        this.showClearButton = !this.showClearButton;
-        this.component = 'app-form';
-      },
-      clear:function () {
-        this.showClearButton = !this.showClearButton;
-        this.showSummaryButton = !this.showSummaryButton;
+        this.showBackButton = false;
+        this.showUsersButton = true;
+        this.showSummaryButton = true;
         this.user = {
           username: '',
           password: '',
@@ -66,7 +67,24 @@
           city: '',
           gender: ''
         };
+        this.component = 'app-form';
+      },
+      showUsers: function() {
+        this.showBackButton = true;
+        this.showUsersButton = false;
+        this.showSummaryButton = false;
+        this.component = 'user-list';
+      },
+      //Without using bus to emit events
+      updateTitle:function(title) {
+        this.title = title;
       }
+    },
+    //When the component is created
+    created: function() {
+      bus.$on('titleChanged', (data) => {
+        this.title = data;
+      })
     }
   }
 </script>

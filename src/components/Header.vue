@@ -1,12 +1,14 @@
 <template>
   <div>
     <header>
-      <h1 v-on:click="changeTitle">{{title}}</h1>
+      <h1 v-on:click="changeTitle">{{title | to-uppercase}}</h1>
     </header>
   </div>
 </template>
 
 <script>
+  import {bus} from '../main.js'
+
   export default {
     props: {
       title: {
@@ -23,10 +25,12 @@
       changeTitle: function () {
         if(!this.titleChanged) {
           this.title = "Vue New Application";
+          bus.$emit("titleChanged", this.title);
           this.titleChanged = !this.titleChanged;
         }
         else {
           this.title ="Vue Application";
+          bus.$emit("titleChanged", this.title);
           this.titleChanged = !this.titleChanged;
         }
       }

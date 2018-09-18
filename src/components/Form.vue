@@ -28,6 +28,10 @@
 <script>
   export default {
     props: {
+      users: {
+        type:Array,
+        required: false
+      },
       user: {
         type: Object,
         required: true
@@ -39,6 +43,17 @@
         summary: 'Form Summary',
         states: ['...', 'NE', 'NY', 'IO', 'TX', 'TN', 'FL', 'MI', 'MIS', 'MN', 'MS']
       }
+    },
+    methods: {
+      // post:function() {
+      //   this.$http.post('https://jsonplaceholder.typicode.com/posts'. {
+      //     title: this.title,
+      //     body: this.user,
+      //     userId: 1;
+      //   }).then(function (data) {
+      //     console.log(data);
+      //   })
+      // }
     }
   }
 

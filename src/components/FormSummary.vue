@@ -13,6 +13,10 @@
 <script>
   export default {
     props: {
+      users: {
+        type:Array,
+        required: false
+      },
       user: {
         type: Object,
         required: true
