@@ -3,10 +3,17 @@
     <app-header v-bind:title="title"></app-header>
     <!--<component v-bind:is="component" v-bind:user="user" v-bind:users="users"></component>-->
     <router-view v-bind:user="user" v-bind:users="users"></router-view>
-    <router-link to="/summary"><button v-on:click="showSummary" v-show="showSummaryButton">Submit</button></router-link>
+    <router-link v-bind:to="link"><button v-on:click="isUserEmpty" v-show="showSummaryButton">Submit</button></router-link>
     <router-link to="/"><button v-on:click="goBack" v-show="showBackButton">Back</button></router-link>
     <router-link to="/users"><button v-on:click="showUsers" v-show="showUsersButton">AllUsers</button></router-link>
     <app-footer v-bind:title="title" v-on:changeTitle="updateTitle($event)"></app-footer>
+    <!--<button v-on:click="showModal">Show Modal</button>-->
+    <modal v-show="isModalActive" v-on:close="closeModal">
+      <div slot="body">
+        <p>{{modalMessage}}</p>
+      </div>
+    </modal>
+
   </div>
 </template>
 
@@ -18,6 +25,7 @@
   import Footer from './components/Footer'
   import UserList from './components/Users.vue'
   import {bus} from './main.js'
+  import Modal from './components/Modal.vue'
 
   export default {
     components: {
@@ -26,13 +34,17 @@
       'app-form-summary': FormSummary,
       'app-footer': Footer,
       'user-list' : UserList,
+      'modal': Modal,
     },
     data:function () {
       return {
+        link: '',
+        modalMessage: '',
         showSummaryButton: true,
         showBackButton: false,
         showClearButton: false,
         showUsersButton:false,
+        isModalActive: false,
 
         component: 'app-form',
 
@@ -49,6 +61,23 @@
       }
     },
     methods: {
+      showModal: function (){
+        this.isModalActive = true;
+        this.modalMessage = 'user is emptyuser is emptyuser is emptyuser is emptyuser is emptyuser is empty!zuser is emptyuser is emptyuser is emptyuser is emptyuser is emptyuser is emptyuser is emptyuser is empty'
+      },
+      closeModal: function () {
+        this.isModalActive = false;
+      },
+      isUserEmpty: function () {
+        if(this.user.username.length == 0) {
+          this.link = '/',
+          this.showModal();
+        }
+        else {
+          this.link ='/summary',
+          this.showSummary();
+        }
+      },
       showSummary:function () {
         this.showSummaryButton = !this.showSummaryButton;
         this.showBackButton = !this.showBackButton;
