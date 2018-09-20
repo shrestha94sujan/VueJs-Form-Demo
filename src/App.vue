@@ -7,11 +7,8 @@
     <router-link to="/"><button v-on:click="goBack" v-show="showBackButton">Back</button></router-link>
     <router-link to="/users"><button v-on:click="showUsers" v-show="showUsersButton">AllUsers</button></router-link>
     <app-footer v-bind:title="title" v-on:changeTitle="updateTitle($event)"></app-footer>
-    <!--<button v-on:click="showModal">Show Modal</button>-->
-    <modal v-show="isModalActive" v-on:close="closeModal">
-      <div slot="body">
-        <p>{{modalMessage}}</p>
-      </div>
+    <button v-on:click="showModal">Show Modal</button>
+    <modal v-show="isModalActive" v-on:closePopUpModal="closeModal" v-bind:popupModal="popupModal">
     </modal>
 
   </div>
@@ -58,12 +55,17 @@
           gender: ''
         },
         users: [],
+        popupModal: {
+          header: '',
+          message: ''
+        },
       }
     },
     methods: {
       showModal: function (){
         this.isModalActive = true;
-        this.modalMessage = 'user is emptyuser is emptyuser is emptyuser is emptyuser is emptyuser is empty!zuser is emptyuser is emptyuser is emptyuser is emptyuser is emptyuser is emptyuser is emptyuser is empty'
+        this.popupModal.header = 'Alert';
+        this.popupModal.message = 'user is emptyuser is emptyuser is emptyuser is '
       },
       closeModal: function () {
         this.isModalActive = false;
